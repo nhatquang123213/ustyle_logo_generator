@@ -139,9 +139,7 @@ class CanvasController {
       final _rect = Rect.fromPoints(_pts!.start, _pts.end);
       _selectedObjects.clear();
       for (var i = 0; i < _objects.length; i++) {
-        if (_rect.overlaps(_objects[i].rect)) {
-          _selectedObjects.add(i);
-        }
+        if (_rect.overlaps(_objects[i].rect)) {}
       }
     } else if (touchCount == 1) {
       // Widget Move
@@ -210,6 +208,10 @@ class CanvasController {
         _selectedObjects.add(0);
         final item = _objects.removeAt(i);
         _objects.insert(0, item);
+      });
+
+  void unSelectObject() => _update(() {
+        _selectedObjects.clear();
       });
 
   /// Checks if the shift key on the keyboard is pressed

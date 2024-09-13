@@ -26,27 +26,37 @@ class _HomeScreenState extends State<HomeScreen> {
       CanvasObject(
         dx: 20,
         dy: 20,
-        width: 100,
-        height: 100,
-        child: Container(color: Colors.red),
+        child: Container(
+          color: Colors.red,
+          width: 100,
+          height: 100,
+          child: Center(
+            child: Text(
+              "Logo",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ),
     );
     _controller.addObject(
       CanvasObject(
         dx: 80,
         dy: 60,
-        width: 100,
-        height: 200,
-        child: Container(color: Colors.green),
+        child: Text(
+          "Logo Name",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
     _controller.addObject(
       CanvasObject(
         dx: 100,
         dy: 40,
-        width: 100,
-        height: 50,
-        child: Container(color: Colors.blue),
+        child: Text(
+          "Logo Description",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
@@ -120,85 +130,94 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            body: Listener(
-              behavior: HitTestBehavior.opaque,
-              onPointerSignal: (details) {
-                if (details is PointerScrollEvent) {
-                  GestureBinding.instance.pointerSignalResolver
-                      .register(details, (event) {
-                    if (event is PointerScrollEvent) {
-                      if (_controller.shiftPressed) {
-                        double zoomDelta = (-event.scrollDelta.dy / 300);
-                        _controller.scale = _controller.scale + zoomDelta;
-                      } else {
-                        _controller.offset =
-                            _controller.offset - event.scrollDelta;
-                      }
+            body: GestureDetector(
+              onTap: () => _controller.unSelectObject(),
+              child: Container(
+                height: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.black,
+                child: Listener(
+                  behavior: HitTestBehavior.opaque,
+                  onPointerSignal: (details) {
+                    print('onPointerSignal');
+                    if (details is PointerScrollEvent) {
+                      GestureBinding.instance.pointerSignalResolver
+                          .register(details, (event) {
+                        if (event is PointerScrollEvent) {
+                          if (_controller.shiftPressed) {
+                            double zoomDelta = (-event.scrollDelta.dy / 300);
+                            _controller.scale = _controller.scale + zoomDelta;
+                          } else {
+                            _controller.offset =
+                                _controller.offset - event.scrollDelta;
+                          }
+                        }
+                      });
                     }
-                  });
-                }
-              },
-              onPointerMove: (details) {
-                _controller.updateTouch(
-                  details.pointer,
-                  details.localPosition,
-                  details.position,
-                );
-              },
-              onPointerDown: (details) {
-                _controller.addTouch(
-                  details.pointer,
-                  details.localPosition,
-                  details.position,
-                );
-              },
-              onPointerUp: (details) {
-                _controller.removeTouch(details.pointer);
-              },
-              onPointerCancel: (details) {
-                _controller.removeTouch(details.pointer);
-              },
-              child: RawKeyboardListener(
-                autofocus: true,
-                focusNode: _controller.focusNode,
-                onKey: (key) => _controller.rawKeyEvent(context, key),
-                child: SizedBox.expand(
-                  child: Stack(
-                    children: [
-                      for (var i = instance!.objects.length - 1; i > -1; i--)
-                        Positioned.fromRect(
-                          rect: instance.objects[i].rect.adjusted(
-                            _controller.offset,
-                            _controller.scale,
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                              color: instance.isObjectSelected(i)
-                                  ? Colors.grey
-                                  : Colors.transparent,
-                            )),
-                            child: GestureDetector(
-                              onTapDown: (_) => _controller.selectObject(i),
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: SizedBox.fromSize(
-                                  size: instance.objects[i].size,
-                                  child: instance.objects[i].child,
+                  },
+                  onPointerMove: (details) {
+                    print('onPointerMove');
+                    _controller.updateTouch(
+                      details.pointer,
+                      details.localPosition,
+                      details.position,
+                    );
+                  },
+                  onPointerDown: (details) {
+                    print('onPointerDown${details.localPosition.dx}');
+                    _controller.addTouch(
+                      details.pointer,
+                      details.localPosition,
+                      details.position,
+                    );
+                  },
+                  onPointerUp: (details) {
+                    print('onPointerUp${details.localPosition.dx}');
+                    _controller.removeTouch(details.pointer);
+                  },
+                  onPointerCancel: (details) {
+                    print('onPointerCancel');
+                    _controller.removeTouch(details.pointer);
+                  },
+                  child: RawKeyboardListener(
+                    autofocus: true,
+                    focusNode: _controller.focusNode,
+                    onKey: (key) => _controller.rawKeyEvent(context, key),
+                    child: SizedBox.expand(
+                      child: Stack(
+                        children: [
+                          for (var i = instance!.objects.length - 1;
+                              i > -1;
+                              i--)
+                            Positioned(
+                              left: instance.objects[i].dx,
+                              top: instance.objects[i].dy,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                  color: instance.isObjectSelected(i)
+                                      ? Colors.grey
+                                      : Colors.transparent,
+                                )),
+                                child: GestureDetector(
+                                  onTapDown: (_) => _controller.selectObject(i),
+                                  child: SizedBox(
+                                    child: instance.objects[i].child,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      if (instance.marquee != null)
-                        Positioned.fromRect(
-                          rect: instance.marquee!.rect
-                              .adjusted(instance.offset, instance.scale),
-                          child: Container(
-                            color: Colors.blueAccent.withOpacity(0.3),
-                          ),
-                        ),
-                    ],
+                          if (instance.marquee != null)
+                            Positioned.fromRect(
+                              rect: instance.marquee!.rect
+                                  .adjusted(instance.offset, instance.scale),
+                              child: Container(
+                                color: Colors.blueAccent.withOpacity(0.3),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

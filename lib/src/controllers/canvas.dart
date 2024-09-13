@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_multi_touch/src/themes/colors.dart';
 
 import '../classes/canvas_object.dart';
 import '../classes/rect_points.dart';
@@ -31,6 +32,33 @@ class CanvasController {
   // -- Canvas Objects --
 
   final List<CanvasObject<Widget>> _objects = [];
+
+  bool showBackgroundSetting = false;
+
+  (Color?, Color?)? backgroundColor;
+
+  BoxDecoration get backgroundDecoration => BoxDecoration(
+        border: Border.all(
+            color: showBackgroundSetting
+                ? ColorStyles.kPrimaryColor
+                : Colors.transparent),
+        color: backgroundColor != null && backgroundColor!.$2 == null
+            ? backgroundColor!.$1
+            : null,
+        gradient: backgroundColor != null && backgroundColor!.$2 != null
+            ? LinearGradient(
+                colors: [backgroundColor!.$1!, backgroundColor!.$2!],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              )
+            : null,
+        image: backgroundColor == null
+            ? DecorationImage(
+                image: NetworkImage(
+                    "https://thumbs.dreamstime.com/b/background-transparency-chess-board-square-grid-line-gray-white-transparent-mesh-transparent-pattern-background-simulation-220272478.jpg"),
+              )
+            : null,
+      );
 
   /// Current Objects on the canvas
   List<CanvasObject<Widget>> get objects => _objects;
@@ -107,6 +135,7 @@ class CanvasController {
   bool _isMovingCanvasObject = false;
 
   final List<int> _selectedObjects = [];
+
   List<int> get selectedObjectsIndices => _selectedObjects;
   List<CanvasObject<Widget>> get selectedObjects =>
       _selectedObjects.map((i) => _objects[i]).toList();
@@ -208,10 +237,12 @@ class CanvasController {
         _selectedObjects.add(0);
         final item = _objects.removeAt(i);
         _objects.insert(0, item);
+        _unFocusBackground();
       });
 
   void unSelectObject() => _update(() {
         _selectedObjects.clear();
+        _focusBackground();
       });
 
   /// Checks if the shift key on the keyboard is pressed
@@ -304,5 +335,18 @@ class CanvasController {
       value = math.max(item, value);
     }
     return value;
+  }
+
+  void _focusBackground() {
+    showBackgroundSetting = true;
+  }
+
+  void _unFocusBackground() {
+    showBackgroundSetting = false;
+  }
+
+  onSelectBackgroundColor((Color? color1, Color? color2)? color) {
+    backgroundColor = color;
+    add(this);
   }
 }

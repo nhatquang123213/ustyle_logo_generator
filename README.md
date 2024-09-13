@@ -16,3 +16,11 @@ This is the canvas rendering logic used in https://widget.studio
 * Bonus trackpad support with similar results
 
 In order to achieve this we need to use a Listener for the trackpad events and raw touch interactions and  [RawKeyboardListener](https://api.flutter.dev/flutter/widgets/RawKeyboardListener-class.html) for keyboard shortcuts.
+
+
+* Edit background color: 
+![image](https://github.com/user-attachments/assets/1fcf17a8-02a7-4177-8710-98b37197d304)
+
+* Drag drop item:
+  ![image](https://github.com/user-attachments/assets/c1e760ca-b4aa-4d70-a67f-d6fe436ab5a2)
+

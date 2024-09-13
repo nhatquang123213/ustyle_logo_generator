@@ -17,7 +17,7 @@ class CanvasController {
   Stream<CanvasController> get stream => _controller.stream;
 
   /// Emit a new event to rebuild the UI
-  void add([CanvasController val]) => _controller.add(val ?? this);
+  void add([CanvasController? val]) => _controller.add(val ?? this);
 
   /// Stop the stream and finish
   void close() {
@@ -99,8 +99,8 @@ class CanvasController {
   int get touchCount => _pointerMap.values.length;
 
   /// Marquee selection on the canvas
-  RectPoints get marquee => _marquee;
-  RectPoints _marquee;
+  RectPoints? get marquee => _marquee;
+  RectPoints? _marquee;
 
   /// Dragging a canvas object
   bool get isMovingCanvasObject => _isMovingCanvasObject;
@@ -134,9 +134,9 @@ class CanvasController {
       _pointerMap[pointer] = offsetVal;
       final b = _pointerMap.values.first;
       final delta = (b - a) / scale;
-      _pts.end = _pts.end + delta;
+      _pts?.end = _pts.end + delta;
       _marquee = _pts;
-      final _rect = Rect.fromPoints(_pts.start, _pts.end);
+      final _rect = Rect.fromPoints(_pts!.start, _pts.end);
       _selectedObjects.clear();
       for (var i = 0; i < _objects.length; i++) {
         if (_rect.overlaps(_objects[i].rect)) {

@@ -5,7 +5,7 @@ import '../../src/classes/canvas_object.dart';
 import '../../src/controllers/canvas.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key key}) : super(key: key);
+  const HomeScreen();
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -77,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: IconButton(
                     tooltip: 'Selection',
                     icon: Icon(Icons.select_all),
-                    color: instance.shiftPressed
-                        ? Theme.of(context).accentColor
+                    color: instance?.shiftPressed ?? false
+                        ? Theme.of(context).hintColor
                         : null,
                     onPressed: _controller.shiftSelect,
                   ),
@@ -87,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   canRequestFocus: false,
                   child: IconButton(
                     tooltip: 'Meta Key',
-                    color: instance.metaPressed
-                        ? Theme.of(context).accentColor
+                    color: instance?.metaPressed ?? false
+                        ? Theme.of(context).hintColor
                         : null,
                     icon: Icon(Icons.category),
                     onPressed: _controller.metaSelect,
@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: SizedBox.expand(
                   child: Stack(
                     children: [
-                      for (var i = instance.objects.length - 1; i > -1; i--)
+                      for (var i = instance!.objects.length - 1; i > -1; i--)
                         Positioned.fromRect(
                           rect: instance.objects[i].rect.adjusted(
                             _controller.offset,
@@ -190,9 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                      if (instance?.marquee != null)
+                      if (instance.marquee != null)
                         Positioned.fromRect(
-                          rect: instance.marquee.rect
+                          rect: instance.marquee!.rect
                               .adjusted(instance.offset, instance.scale),
                           child: Container(
                             color: Colors.blueAccent.withOpacity(0.3),

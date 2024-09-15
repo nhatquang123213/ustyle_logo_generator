@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_multi_touch/src/classes/gradient_color.dart';
+import 'package:flutter_multi_touch/src/constants/constant.dart';
 import 'package:flutter_multi_touch/src/themes/colors.dart';
 
 import '../classes/canvas_object.dart';
@@ -34,29 +35,31 @@ class CanvasController {
   final List<CanvasObject<Widget>> _objects = [];
 
   bool showBackgroundSetting = false;
+  bool get showCanvasSetting => _selectedObjects.isNotEmpty;
 
-  (Color?, Color?)? backgroundColor;
+  BackgroundColor? backgroundColor;
 
   BoxDecoration get backgroundDecoration => BoxDecoration(
         border: Border.all(
-            color: showBackgroundSetting
-                ? ColorStyles.kPrimaryColor
-                : Colors.transparent),
-        color: backgroundColor != null && backgroundColor!.$2 == null
-            ? backgroundColor!.$1
+          color: showBackgroundSetting
+              ? ColorStyles.kPrimaryColor
+              : Colors.transparent,
+        ),
+        color: backgroundColor?.isSolidColor ?? false
+            ? backgroundColor!.startColor
             : null,
-        gradient: backgroundColor != null && backgroundColor!.$2 != null
+        gradient: backgroundColor?.isGradientColor ?? false
             ? LinearGradient(
-                colors: [backgroundColor!.$1!, backgroundColor!.$2!],
+                colors: [
+                  backgroundColor!.startColor!,
+                  backgroundColor!.endColor!,
+                ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               )
             : null,
         image: backgroundColor == null
-            ? DecorationImage(
-                image: NetworkImage(
-                    "https://thumbs.dreamstime.com/b/background-transparency-chess-board-square-grid-line-gray-white-transparent-mesh-transparent-pattern-background-simulation-220272478.jpg"),
-              )
+            ? DecorationImage(image: NetworkImage(transparentImg))
             : null,
       );
 
@@ -345,7 +348,7 @@ class CanvasController {
     showBackgroundSetting = false;
   }
 
-  onSelectBackgroundColor((Color? color1, Color? color2)? color) {
+  onSelectBackgroundColor(BackgroundColor? color) {
     backgroundColor = color;
     add(this);
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_touch/src/constants/constant.dart';
 import 'package:flutter_multi_touch/src/themes/colors.dart';
-import 'package:flutter_multi_touch/src/widgets/background_colors.widget.dart';
+import 'package:flutter_multi_touch/src/widgets/background_colors_setting.widget.dart';
+import 'package:flutter_multi_touch/src/widgets/canvas_text_field_setting.widget.dart';
 
 import '../../src/classes/canvas_object.dart';
 import '../../src/controllers/canvas.dart';
@@ -32,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       CanvasObject(
         dx: 20,
         dy: 20,
+        type: CanvasObjectType.Image,
         child: Container(
           color: ColorStyles.red7,
           width: 100,
@@ -49,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       CanvasObject(
         dx: 80,
         dy: 60,
+        type: CanvasObjectType.Text,
         child: Text(
           "Logo Name",
           style: TextStyle(color: ColorStyles.black),
@@ -59,10 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
       CanvasObject(
         dx: 100,
         dy: 40,
+        type: CanvasObjectType.Text,
         child: Text(
           key: key,
           "Logo Description",
-          style: TextStyle(color: ColorStyles.black),
+          style: TextStyle(
+            color: ColorStyles.black,
+          ),
         ),
       ),
     );
@@ -99,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            body: Column(
+            body: ListView(
               children: [
                 GestureDetector(
                   onTap: () => _controller.unSelectObject(),
@@ -202,6 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onSelectColor: _controller.onSelectBackgroundColor,
                     selectedColor: instance.backgroundColor,
                   ),
+                if (instance.showCanvasSetting) CanvasTextFieldSetting(),
               ],
             ),
           );

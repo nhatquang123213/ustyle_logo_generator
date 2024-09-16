@@ -109,10 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
             body: ListView(
               children: [
                 GestureDetector(
-                  onTap: () => _controller.unSelectObject(),
+                  onTap: () => _controller.unSelectObject(context),
                   child: Container(
-                    height: MediaQuery.of(context).size.width,
-                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width * 0.8,
+                    width: MediaQuery.of(context).size.width * 0.8,
                     decoration: instance?.backgroundDecoration,
                     child: Listener(
                       behavior: HitTestBehavior.opaque,
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     )),
                                     child: GestureDetector(
                                       onTapDown: (_) =>
-                                          _controller.selectObject(i),
+                                          _controller.selectObject(context, i),
                                       child: SizedBox(
                                         child: instance.objects[i].child,
                                       ),

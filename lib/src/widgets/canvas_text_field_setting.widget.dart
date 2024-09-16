@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_touch/src/themes/colors.dart';
 import 'package:flutter_multi_touch/src/widgets/app_input.widget.dart';
 import 'package:flutter_multi_touch/src/widgets/title_setting_section.widget.dart';
 
@@ -12,13 +13,26 @@ class CanvasTextFieldSetting extends StatefulWidget {
 class _CanvasTextFieldSettingState extends State<CanvasTextFieldSetting> {
   double _fontSize = 20;
   double _fontSpacing = 10;
+  Color _textColor = Colors.black;
+  final TextEditingController _editTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleSection(title: "Edit text"),
-        AppInput(),
+        AppInput(
+          controller: _editTextController,
+        ),
+        TitleSection(title: "Text Color"),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: ColorStyles.black2),
+            color: _textColor,
+          ),
+          width: 80,
+          height: 40,
+        ),
         TitleSection(title: "Font Size"),
         Slider(
           onChanged: (_) {

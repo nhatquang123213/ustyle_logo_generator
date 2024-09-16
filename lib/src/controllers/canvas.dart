@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_multi_touch/src/classes/gradient_color.dart';
 import 'package:flutter_multi_touch/src/constants/constant.dart';
 import 'package:flutter_multi_touch/src/themes/colors.dart';
+import 'package:flutter_multi_touch/src/widgets/background_colors_setting.widget.dart';
 
 import '../classes/canvas_object.dart';
 import '../classes/rect_points.dart';
@@ -233,19 +234,22 @@ class CanvasController {
     add(this);
   }
 
-  void selectObject(int i) => _update(() {
+  void selectObject(BuildContext context, int i) => _update(() {
         if (!_metaPressed) {
           _selectedObjects.clear();
         }
         _selectedObjects.add(0);
         final item = _objects.removeAt(i);
         _objects.insert(0, item);
-        _unFocusBackground();
+        _unFocusBackground(context);
       });
 
-  void unSelectObject() => _update(() {
+  void unSelectObject(
+    BuildContext context,
+  ) =>
+      _update(() {
         _selectedObjects.clear();
-        _focusBackground();
+        _focusBackground(context);
       });
 
   /// Checks if the shift key on the keyboard is pressed
@@ -340,11 +344,26 @@ class CanvasController {
     return value;
   }
 
-  void _focusBackground() {
+  void _focusBackground(BuildContext context) {
     showBackgroundSetting = true;
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return BackgroundColorsSetting(
+          onSelectColor: onSelectBackgroundColor,
+          selectedColor: backgroundColor,
+        );
+      },
+    );
   }
 
-  void _unFocusBackground() {
+  void _unFocusBackground(BuildContext context) {
     showBackgroundSetting = false;
   }
 

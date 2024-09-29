@@ -21,64 +21,67 @@ class BackgroundColorsSetting extends StatefulWidget {
 class _BackgroundColorsSettingState extends State<BackgroundColorsSetting> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TitleSection(title: "Solid colors"),
-        Wrap(
-          runSpacing: 8,
-          spacing: 8,
-          children: [
-            _ColorItem(
-              isSelected: widget.selectedColor == null,
-              onSelectColor: (_) => widget.onSelectColor(null),
-            ),
-            ...ColorStyles.backgroundSolidColors.map((e) {
-              final _color = BackgroundColor(startColor: e);
-              return _ColorItem(
-                color: BackgroundColor(startColor: e),
-                isSelected: widget.selectedColor == _color,
-                onSelectColor: widget.onSelectColor,
-              );
-            }).toList(),
-          ],
-        ),
-        TitleSection(title: "Gradient colors"),
-        Wrap(
-          runSpacing: 8,
-          spacing: 8,
-          children: [
-            ...ColorStyles.backgroundGradientColors.map((e) {
-              final _color = BackgroundColor(
-                startColor: e.$1,
-                endColor: e.$2,
-              );
-              return _ColorItem(
-                color: _color,
-                isSelected: widget.selectedColor == _color,
-                onSelectColor: widget.onSelectColor,
-              );
-            }).toList()
-          ],
-        ), TitleSection(title: "Gradient colors"),
-        Wrap(
-          runSpacing: 8,
-          spacing: 8,
-          children: [
-            ...ColorStyles.backgroundGradientColors.map((e) {
-              final _color = BackgroundColor(
-                startColor: e.$1,
-                endColor: e.$2,
-              );
-              return _ColorItem(
-                color: _color,
-                isSelected: widget.selectedColor == _color,
-                onSelectColor: widget.onSelectColor,
-              );
-            }).toList()
-          ],
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TitleSection(title: "Solid colors"),
+          Wrap(
+            runSpacing: 8,
+            spacing: 8,
+            children: [
+              _ColorItem(
+                isSelected: widget.selectedColor == null,
+                onSelectColor: (_) => widget.onSelectColor(null),
+              ),
+              ...ColorStyles.backgroundSolidColors.map((e) {
+                final _color = BackgroundColor(startColor: e);
+                return _ColorItem(
+                  color: BackgroundColor(startColor: e),
+                  isSelected: widget.selectedColor == _color,
+                  onSelectColor: widget.onSelectColor,
+                );
+              }).toList(),
+            ],
+          ),
+          TitleSection(title: "Gradient colors"),
+          Wrap(
+            runSpacing: 8,
+            spacing: 8,
+            children: [
+              ...ColorStyles.backgroundGradientColors.map((e) {
+                final _color = BackgroundColor(
+                  startColor: e.$1,
+                  endColor: e.$2,
+                );
+                return _ColorItem(
+                  color: _color,
+                  isSelected: widget.selectedColor == _color,
+                  onSelectColor: widget.onSelectColor,
+                );
+              }).toList()
+            ],
+          ),
+          TitleSection(title: "Gradient colors"),
+          Wrap(
+            runSpacing: 8,
+            spacing: 8,
+            children: [
+              ...ColorStyles.backgroundGradientColors.map((e) {
+                final _color = BackgroundColor(
+                  startColor: e.$1,
+                  endColor: e.$2,
+                );
+                return _ColorItem(
+                  color: _color,
+                  isSelected: widget.selectedColor == _color,
+                  onSelectColor: widget.onSelectColor,
+                );
+              }).toList()
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

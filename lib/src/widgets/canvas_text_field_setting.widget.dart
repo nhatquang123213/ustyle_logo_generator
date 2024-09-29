@@ -34,28 +34,36 @@ class _CanvasTextFieldSettingState extends State<CanvasTextFieldSetting> {
           height: 40,
         ),
         TitleSection(title: "Font Size"),
-        Slider(
-          onChanged: (_) {
-            setState(() {
-              _fontSize = _;
-            });
-          },
-          value: _fontSize,
-          min: 1,
-          max: 100,
-          divisions: 100,
+        Row(
+          children: [
+            Expanded(
+              child: Slider(
+                onChanged: (_) => setState(() => _fontSize = _),
+                value: _fontSize,
+                min: 1,
+                max: 100,
+                divisions: 99,
+              ),
+            ),
+            Text(_fontSize.round().toString()),
+            SizedBox(width: 10),
+          ],
         ),
         TitleSection(title: "Font Spacing"),
-        Slider(
-          onChanged: (_) {
-            setState(() {
-              _fontSpacing = _;
-            });
-          },
-          value: _fontSpacing,
-          min: -10,
-          max: 100,
-          divisions: 110,
+        Row(
+          children: [
+            Expanded(
+              child: Slider(
+                onChanged: (_) => setState(() => _fontSpacing = _),
+                value: _fontSize,
+                min: 1,
+                max: 100,
+                divisions: 99,
+              ),
+            ),
+            Text(_fontSpacing.round().toString()),
+            SizedBox(width: 10),
+          ],
         ),
       ],
     );

@@ -79,6 +79,23 @@ class _BackgroundColorsSettingState extends State<BackgroundColorsSetting> {
                 );
               }).toList()
             ],
+          ),TitleSection(title: "Gradient colors"),
+          Wrap(
+            runSpacing: 8,
+            spacing: 8,
+            children: [
+              ...ColorStyles.backgroundGradientColors.map((e) {
+                final _color = BackgroundColor(
+                  startColor: e.$1,
+                  endColor: e.$2,
+                );
+                return _ColorItem(
+                  color: _color,
+                  isSelected: widget.selectedColor == _color,
+                  onSelectColor: widget.onSelectColor,
+                );
+              }).toList()
+            ],
           ),
         ],
       ),
